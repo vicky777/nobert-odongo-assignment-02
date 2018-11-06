@@ -14,11 +14,12 @@
   (read))
 
 ;; Capture Country
-(input-prompt "Enter country: ")
-(define country (cin>>))
+;;(input-prompt "Enter country: ")
+;;(define country (cin>>))
 
 ;; Make massmine query call
 
+;; end of massmine query
 
 (define (json-lines->json-array #:head [head #f])
   (let loop ([num 0]
@@ -44,8 +45,10 @@
 ;(display tweets)
 
 
-(define tweet-text
-  (let ([tmp (map (λ (x) (list (hash-ref x 'text) (hash-ref x 'created_at))) tweets)])
+(define tweet-list
+  (let ([tmp (map (λ (x) (list (hash-ref x 'text))) tweets)])
     (filter (λ (x) (not (string-prefix? (first x) "RT"))) tmp)))
 
-(define words (document->tokens t #:sort? #t))
+(define tweet-text (list->string tweet-list))
+(string? tweet-text)
+;;(define words (document->tokens tweet-text #:sort? #t))
