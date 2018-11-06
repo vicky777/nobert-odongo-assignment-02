@@ -49,6 +49,10 @@
   (let ([tmp (map (λ (x) (list (hash-ref x 'text))) tweets)])
     (filter (λ (x) (not (string-prefix? (first x) "RT"))) tmp)))
 
-(define tweet-text (list->string tweet-list))
-(string? tweet-text)
+
+
+(define first-item (car tweet-list))
+(list? first-item)
+(display (symbol->string (car first-item)))
+
 ;;(define words (document->tokens tweet-text #:sort? #t))
