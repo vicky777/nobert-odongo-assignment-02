@@ -44,6 +44,8 @@
 ;(display tweets)
 
 
-(define t
+(define tweet-text
   (let ([tmp (map (λ (x) (list (hash-ref x 'text) (hash-ref x 'created_at))) tweets)])
     (filter (λ (x) (not (string-prefix? (first x) "RT"))) tmp)))
+
+(define words (document->tokens t #:sort? #t))
