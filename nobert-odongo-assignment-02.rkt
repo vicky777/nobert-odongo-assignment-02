@@ -53,6 +53,16 @@
 
 (define first-item (car tweet-list))
 (list? first-item)
-(display (symbol->string (car first-item)))
+(define tweet-t (car first-item))
+(string? tweet-t)
+
+
+(define (agg-texts list)
+  (cond
+    [(empty? list) list]
+    [else (
+           (tweet-t (string-append (car (car tweet-list)))))]))
+
+(agg-texts tweet-list)
 
 ;;(define words (document->tokens tweet-text #:sort? #t))
