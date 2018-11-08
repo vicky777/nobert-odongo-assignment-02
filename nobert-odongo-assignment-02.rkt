@@ -44,6 +44,7 @@
             (string-downcase x)))))
        lst))
 
+
 (define tweets (string->jsexpr
                 (with-input-from-file "trump.json" (λ () (json-lines->json-array)))))
 
@@ -63,14 +64,14 @@
      [else (string-append (car t-list) 
                           (append-tweet-texts (cdr t-list)))])) 
 
-;; Store sggregated tweet texts into a single 
+;; Store sggregated tweet texts into a single string variable
 (define tweet-texts (append-tweet-texts flattened-list))
 
 ;;; To begin our sentiment analysis, we extract each unique word
 ;;; and the number of times it occurred in the document
 (define words (document->tokens tweet-texts #:sort? #t))
 
-;;; Using the nrc lexicon, we can label each (non stop-word) with an
+;;; Using the nrc lexicon, we label each (non stop-word) with an
 ;;; emotional label. 
 (define sentiment (list->sentiment words #:lexicon 'nrc))
 
