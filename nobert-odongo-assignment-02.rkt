@@ -1,3 +1,7 @@
+;; Odongo Nobert louis
+;; 2018U/HD05/2018
+;; End of Sem Assignment 02
+
 #lang racket
 (require data-science-master)
 (require plot)
@@ -21,6 +25,8 @@
 
 ;; end of massmine query
 
+
+;; Procedure converts
 (define (json-lines->json-array #:head [head #f])
   (let loop ([num 0]
              [json-array '()]
@@ -41,28 +47,46 @@
 (define tweets (string->jsexpr
                 (with-input-from-file "trump.json" (λ () (json-lines->json-array)))))
 
-;(preprocess-text tweets)
-;(display tweets)
-
 
 (define tweet-list
   (let ([tmp (map (λ (x) (list (hash-ref x 'text))) tweets)])
     (filter (λ (x) (not (string-prefix? (first x) "RT"))) tmp)))
 
 
+;; Reduce the two level list of lists of tweet texts to a single level of list of tweet texts.
+(define flattened-list (flatten tweet-list))
 
-(define first-item (car tweet-list))
-(list? first-item)
-(define tweet-t (car first-item))
-(string? tweet-t)
+;; Procedure for aggregating the list of tweet texts into a single string
+(define (append-tweet-texts t-list) 
+   (cond 
+     [(null? t-list) ""] 
+     [else (string-append (car t-list) 
+                          (append-tweet-texts (cdr t-list)))])) 
 
+;; Store sggregated tweet texts into a single 
+(define tweet-texts (append-tweet-texts flattened-list))
 
-(define (agg-texts list)
-  (cond
-    [(empty? list) list]
-    [else (
-           (tweet-t (string-append (car (car tweet-list)))))]))
+;;; To begin our sentiment analysis, we extract each unique word
+;;; and the number of times it occurred in the document
+(define words (document->tokens tweet-texts #:sort? #t))
 
-(agg-texts tweet-list)
+;;; Using the nrc lexicon, we can label each (non stop-word) with an
+;;; emotional label. 
+(define sentiment (list->sentiment words #:lexicon 'nrc))
 
-;;(define words (document->tokens tweet-text #:sort? #t))
+;;; sentiment, created above, consists of a list of triplets of the pattern
+;;; (token sentiment freq) for each token in the document. Many words will have 
+;;; the same sentiment label, so we aggregrate (by summing) across such tokens.
+(aggregate sum ($ sentiment 'sentiment) ($ sentiment 'freq))
+
+;;; Visualizing the result as a barplot (discrete-histogram)
+(let ([counts (aggregate sum ($ sentiment 'sentiment) ($ sentiment 'freq))])
+  (parameterize ((plot-width 800))
+    (plot (list
+	   (tick-grid)
+	   (discrete-histogram
+	    (sort counts (λ (x y) (> (second x) (second y))))
+	    #:color "MediumSlateBlue"
+	    #:line-color "MediumSlateBlue"))
+	  #:x-label "Affective Label"
+	  #:y-label "Frequency")))
