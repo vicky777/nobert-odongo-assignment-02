@@ -41,14 +41,14 @@
 (define countries-raw (string->jsexpr
                 (with-input-from-file "countries.json" (λ () (json-lines->json-array)))))
 
-(display countries-raw)
+(define countries-list
+  (let ([tmp (map (λ (x) (list (hash-ref x 'country) (hash-ref x 'woeid))) (flatten countries-raw))])
+    tmp))
 
-;;(define countries-list
-  ;(let ([tmp (map (λ (x) (list (hash-ref x 'text) (hash-ref x 'source))) countries-raw)])
-   ; tmp))
+(display countries-list)
 
 ;; Perform preprocessing on read list of countries.
-(define countries-cleaned (preprocess-text countries-raw))
+;;(define countries-cleaned (preprocess-text countries-list))
 
 
 ;; Capture Country
