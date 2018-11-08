@@ -17,15 +17,6 @@
 (define (cin>>)
   (read))
 
-;; Capture Country
-;;(input-prompt "Enter country: ")
-;;(define country (cin>>))
-
-;; Make massmine query call
-
-;; end of massmine query
-
-
 ;; Procedure converts
 (define (json-lines->json-array #:head [head #f])
   (let loop ([num 0]
@@ -36,6 +27,7 @@
         (loop (add1 num) (cons record json-array)
               (read-json (current-input-port))))))
 
+;; Procedure to Perform preprocessing on the json data read into memory
 (define (preprocess-text lst)
   (map (λ (x)
          (string-normalize-spaces
@@ -44,7 +36,34 @@
             (string-downcase x)))))
        lst))
 
+;; Read list of countries from list to facilitate searching by application user.
+;; the list of countries will be processed to retrieve  a country-woeid pair list.
+(define countries-raw (string->jsexpr
+                (with-input-from-file "countries.json" (λ () (json-lines->json-array)))))
 
+(display countries-raw)
+
+;;(define countries-list
+  ;(let ([tmp (map (λ (x) (list (hash-ref x 'text) (hash-ref x 'source))) countries-raw)])
+   ; tmp))
+
+;; Perform preprocessing on read list of countries.
+(define countries-cleaned (preprocess-text countries-raw))
+
+
+;; Capture Country
+(input-prompt "Enter country: ")
+(define country (cin>>))
+
+;; Make massmine query call
+
+;; end of massmine query
+
+
+
+
+
+;; Load tweeter data into memory from file.
 (define tweets (string->jsexpr
                 (with-input-from-file "trump.json" (λ () (json-lines->json-array)))))
 
