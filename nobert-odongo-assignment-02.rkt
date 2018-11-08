@@ -15,7 +15,7 @@
 
 ;; Procedure to capture user input
 (define (cin>>)
-  (read))
+  (read-line))
 
 ;; Procedure converts
 (define (json-lines->json-array #:head [head #f])
@@ -45,7 +45,13 @@
   (let ([tmp (map (λ (x) (list (hash-ref x 'country) (hash-ref x 'woeid))) (flatten countries-raw))])
     tmp))
 
-(display countries-list)
+;(display countries-list)
+
+(define (country? c)
+  (let ([tmp_ (map (lambda (cl)
+         (string=? (string-downcase c) (string-downcase (car cl))))
+       countries-list)])
+    tmp_))
 
 ;; Perform preprocessing on read list of countries.
 ;;(define countries-cleaned (preprocess-text countries-list))
@@ -54,8 +60,12 @@
 ;; Capture Country
 (input-prompt "Enter country: ")
 (define country (cin>>))
+(display (string? country))
 
-;; Make massmine query call
+(display (if (member '#t (country? country))
+
+
+;; Make massmine query call with country woeid
 
 ;; end of massmine query
 
