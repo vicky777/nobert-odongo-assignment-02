@@ -1,5 +1,5 @@
 ;; Odongo Nobert louis
-;; 2018/HD05/2018U
+;; 2018U/HD05/2018
 ;; End of Sem Assignment 02
 
 #lang racket
@@ -15,21 +15,7 @@
 
 ;; Procedure to capture user input
 (define (cin>>)
-<<<<<<< HEAD
-  (read-byte))
-
-;; Capture Country
-(input-prompt "Enter country: ")
-(define country (cin>>))
-
-
-;; Make massmine query call
-
-;; end of massmine query
-
-=======
   (read-line))
->>>>>>> adding-country-functionality
 
 ;; Procedure converts
 (define (json-lines->json-array #:head [head #f])
