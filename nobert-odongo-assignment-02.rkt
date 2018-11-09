@@ -62,11 +62,11 @@
 (define country (cin>>))
 (display (string? country))
 
-(display (if (member '#t (country? country))
+;;(display (if (member '#t (country? country))))
 
 
 ;; Make massmine query call with country woeid
-
+(define (run-query)(""))
 ;; end of massmine query
 
 
